@@ -25,7 +25,7 @@ function menu_for_commands() {
 			if [[ $find_file == "True" ]]
 			then
 				sudo cp $file_path /etc/wireguard/
-				echo "WireGuard конфиг файл $file_path успешно скопирован в /etc/wireguard/."
+				echo "WireGuard конфиг файл $file_path успешно скопирован в директорию /etc/wireguard/."
 				echo ""
 			else
 				if [[ $find_file == "False" ]]
