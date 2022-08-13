@@ -13,46 +13,38 @@ function menu_for_commands() {
 		echo "4 - Отключиться от сервера."
 		echo ""
 
-		echo -n ":: Введите номер команды [1/2/3/4]: "
+		echo -n ":: Введите номер команды [0/1/2/3/4]: "
 		read select_command
-
-		if [[ $select_command == "1" ]]
+		if [[ $select_command == "0" ]]
 		then
-			echo -n ":: Введите путь к WireGuard конфиг файлу: "
-			read file_path
-			
-			find_file=$(python python_scripts/find_file.py $file_path)
-			if [[ $find_file == "True" ]]
+			clear
+			exit
+		else
+			if [[ $select_command == "1" ]]
 			then
-				sudo cp $file_path /etc/wireguard/
-				echo "WireGuard конфиг файл $file_path успешно скопирован в директорию /etc/wireguard/."
-				echo ""
-			else
-				if [[ $find_file == "False" ]]
+				echo -n ":: Введите путь к WireGuard конфиг файлу: "
+				read file_path
+				
+				find_file=$(python python_scripts/find_file.py $file_path)
+				if [[ $find_file == "True" ]]
 				then
-					echo "WireGuard конфиг файл не был найден по пути $file_path!"
+					sudo cp $file_path /etc/wireguard/
+					echo "WireGuard конфиг файл $file_path успешно скопирован в директорию /etc/wireguard/."
 					echo ""
 				else
-					echo $find_file
-					echo ""
+					clear
+
+					if [[ $find_file == "False" ]]
+					then
+						echo -e "\033[31mWireGuard конфиг файл не был найден по пути $file_path!\033[0m"
+						echo ""
+					else
+						echo -e "\033[31m$find_file\033[0m"
+						echo ""
+					fi
 				fi
-			fi
-		else
-			if [[ $select_command == "2" ]]
-			then
-				echo ""
-				echo "Все ваши WireGuard конфиг файлы:"
-				echo $(python python_scripts/show_wireguard_confings.py)
-				echo ""
-
-				echo -n ":: Введите название WireGuard конфиг файла: "
-				read wireguard_conf
-
-				sudo rm -rf /etc/wireguard/$wireguard_conf.conf
-				echo "WireGuard конфиг файл $wireguard_conf.conf был успешно удалён."
-				echo ""
 			else
-				if [[ $select_command == "3" ]]
+				if [[ $select_command == "2" ]]
 				then
 					echo ""
 					echo "Все ваши WireGuard конфиг файлы:"
@@ -62,11 +54,13 @@ function menu_for_commands() {
 					echo -n ":: Введите название WireGuard конфиг файла: "
 					read wireguard_conf
 
-					sudo wg-quick up $wireguard_conf
-					echo "Вы успешно подключились к серверу по WireGuard конфиг файлу $wireguard_conf."
+					sudo rm -rf /etc/wireguard/$wireguard_conf.conf
+					clear
+
+					echo "WireGuard конфиг файл $wireguard_conf.conf был успешно удалён."
 					echo ""
 				else
-					if [[ $select_command == "4" ]]
+					if [[ $select_command == "3" ]]
 					then
 						echo ""
 						echo "Все ваши WireGuard конфиг файлы:"
@@ -76,18 +70,41 @@ function menu_for_commands() {
 						echo -n ":: Введите название WireGuard конфиг файла: "
 						read wireguard_conf
 
-						sudo wg-quick down $wireguard_conf
-						echo "Вы успешно отключились от сервера, по которому вы были подключены поэтому WireGuard конфиг файлу $wireguard_conf."
+						clear
+						sudo wg-quick up $wireguard_conf
 						echo ""
 					else
-						echo "Команды $select_command не существует!"
-						echo ""
+						if [[ $select_command == "4" ]]
+						then
+							echo ""
+							echo "Все ваши WireGuard конфиг файлы:"
+							echo $(python python_scripts/show_wireguard_confings.py)
+							echo ""
+
+							echo -n ":: Введите название WireGuard конфиг файла: "
+							read wireguard_conf
+
+							clear
+							sudo wg-quick down $wireguard_conf
+							echo ""
+						else
+							clear
+
+							echo -e "\033[31mКоманды $select_command не существует!\033[0m"
+							echo ""
+						fi
 					fi
 				fi
 			fi
 		fi
 	done
 }
+
+find_file=$(python python_scripts/find_file.py program_data/wireguard_tools_status.txt)
+if [[ $find_file == "False" ]]
+then
+	echo "Wireguard-tools package not installed" > program_data/wireguard_tools_status.txt
+fi
 
 wireguard_tools_status=$(cat program_data/wireguard_tools_status.txt)
 if [[ $wireguard_tools_status == "Wireguard-tools package not installed" ]]
@@ -101,10 +118,13 @@ then
 	then
 		echo "Wireguard-tools package installed" > program_data/wireguard_tools_status.txt
 		echo ""
+
+		clear
 		menu_for_commands
 	else
-		echo "Устоновите wireguard-tools пакет!"
+		echo "\033[31mУстоновите wireguard-tools пакет!\033[0m"
 	fi
 else
+	clear
 	menu_for_commands
 fi
