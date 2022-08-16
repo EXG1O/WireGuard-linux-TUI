@@ -214,14 +214,14 @@ function show_commands_menu() {
 }
 
 # Условие для проверки был ли создан файл wireguard_tools_status.txt в директории program_data
-find_file=$(python python_scripts/find_file.py program_data/wireguard_tools_status.txt)
+find_file=$(python main.py "find_file('./wireguard_tools_status.txt')")
 if [[ $find_file == "False" ]]
 then
-	echo "Wireguard-tools package not installed" > program_data/wireguard_tools_status.txt
+	echo "Wireguard-tools package not installed" > wireguard_tools_status.txt
 fi
 
 # Условие для проверки установлен ли wireguard-tools пакет
-wireguard_tools_status=$(cat program_data/wireguard_tools_status.txt)
+wireguard_tools_status=$(cat wireguard_tools_status.txt)
 if [[ $wireguard_tools_status == "Wireguard-tools package not installed" ]]
 then
 	echo -n ":: У вас установлен wireguard-tools пакет? [Y/N]: "
@@ -231,13 +231,13 @@ then
 
 	if [ $user_answer == "y" ]
 	then
-		echo "Wireguard-tools package installed" > program_data/wireguard_tools_status.txt
+		echo "Wireguard-tools package installed" > wireguard_tools_status.txt
 		echo ""
 
 		clear
 		show_commands_menu
 	else
-		echo "\033[31mУстоновите wireguard-tools пакет!\033[0m"
+		echo -e "\033[31mУстоновите wireguard-tools пакет!\033[0m"
 	fi
 else
 	clear
