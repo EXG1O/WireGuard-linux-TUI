@@ -237,7 +237,9 @@ then
 		clear
 		show_commands_menu
 	else
+		clear
 		echo -e "\033[31mУстоновите wireguard-tools пакет!\033[0m"
+		echo ""
 	fi
 else
 	clear
