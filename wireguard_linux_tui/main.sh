@@ -24,7 +24,7 @@ function add_wireguard_config_file() {
 	echo -n ":: Введите путь к WireGuard конфиг файлу: "
 	read file_path
 	
-	find_file=$(python main.py "find_file('$file_path')")
+	find_file=$(sudo python main.py "find_file('$file_path')")
 	if [[ $find_file == "True" ]]
 	then
 		sudo cp $file_path /etc/wireguard/
@@ -50,13 +50,13 @@ function add_wireguard_config_file() {
 function delete_wireguard_config_file() {
 	echo ""
 	echo "Все ваши WireGuard конфиг файлы:"
-	echo $(python main.py "get_wireguard_confings()")
+	echo $(sudo python main.py "get_wireguard_confings()")
 	echo ""
 
 	echo -n ":: Введите номер WireGuard конфиг файла: "
 	read wireguard_conf_num
 
-	wireguard_conf=$(python main.py "get_wireguard_confing('$wireguard_conf_num')")
+	wireguard_conf=$(sudo python main.py "get_wireguard_confing('$wireguard_conf_num')")
 	if [[ $wireguard_conf == "False_1" ]]
 	then
 		clear
@@ -85,13 +85,13 @@ function connect_to_server() {
 	then
 		echo ""
 		echo "Все ваши WireGuard конфиг файлы:"
-		echo $(python main.py "get_wireguard_confings()")
+		echo $(sudo python main.py "get_wireguard_confings()")
 		echo ""
 
 		echo -n ":: Введите номер WireGuard конфиг файла: "
 		read wireguard_conf_num
 
-		wireguard_conf=$(python main.py "get_wireguard_confing('$wireguard_conf_num')")
+		wireguard_conf=$(sudo python main.py "get_wireguard_confing('$wireguard_conf_num')")
 		if [[ $wireguard_conf == "False_1" ]]
 		then
 			clear
@@ -135,13 +135,13 @@ function show_connect_statistics() {
 function disconnect_from_server () {
 	echo ""
 	echo "Все ваши WireGuard конфиг файлы:"
-	echo $(python main.py "get_wireguard_confings()")
+	echo $(sudo python main.py "get_wireguard_confings()")
 	echo ""
 
 	echo -n ":: Введите номер WireGuard конфиг файла: "
 	read wireguard_conf_num
 
-	wireguard_conf=$(python main.py "get_wireguard_confing('$wireguard_conf_num')")
+	wireguard_conf=$(sudo python main.py "get_wireguard_confing('$wireguard_conf_num')")
 	if [[ $wireguard_conf == "False_1" ]]
 	then
 		clear
@@ -214,7 +214,7 @@ function show_commands_menu() {
 }
 
 # Условие для проверки был ли создан файл wireguard_tools_status.txt в директории program_data
-find_file=$(python main.py "find_file('./wireguard_tools_status.txt')")
+find_file=$(sudo python main.py "find_file('./wireguard_tools_status.txt')")
 if [[ $find_file == "False" ]]
 then
 	echo "Wireguard-tools package not installed" > wireguard_tools_status.txt
