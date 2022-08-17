@@ -16,6 +16,6 @@ sudo chown -R root /etc/wireguard/
 ```sh
 git clone https://github.com/EXG1O/WireGuard-linux-TUI.git
 cd WireGuard-linux-TUI/wireguard_linux_tui
-sh main.sh
+sudo sh main.sh
 ```
 4. Пользуемся 😊!
