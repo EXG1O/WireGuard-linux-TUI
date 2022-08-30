@@ -27,7 +27,7 @@ function add_wireguard_config_file() {
 	find_file=$(sudo python main.py "find_file('$file_path')")
 	if [[ $find_file == "True" ]]
 	then
-		sudo cp $file_path /etc/wireguard/
+		sudo cp "$file_path" /etc/wireguard/
 
 		clear
 		echo "WireGuard конфиг файл $file_path успешно скопирован в директорию /etc/wireguard/."
